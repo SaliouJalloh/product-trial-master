@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_db?currentSchema=sc_ecommerce_dev
+    username: postgres
+    password: test
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8085
+application:
+  frontend:
+    basePath: http://localhost:4200
+  backend:
+    basePath: http://localhost:8085
+  security:
+    jwt:
+      secretKey: 586B633834416E396D7436753879382F423F4428482B4C6250655367566B5970
+      accessToken:
+        expirationTime: 86400000 # 24 heures
+
+cors:
+  allowed-origins: "${application.frontend.basePath}"
+  allowed-methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  allowed-headers: "Origin, Access-Control-Allow-Origin, Content-Type,
+                         Accept, Jwt-Token, Authorization, Origin, Accept, X-Requested-With,
+                         Access-Control-Request-Method, Access-Control-Request-Headers"
+  exposed-headers: "Origin, Content-Type, Accept, Jwt-Token, Authorization,
+                         Access-Control-Allow-Origin, Access-Control-Allow-Origin, Access-Control-Allow-Credentials"
+  allow-credentials: true
+  max-age: 3600

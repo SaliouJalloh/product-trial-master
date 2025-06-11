@@ -1,0 +1,65 @@
+spring:
+  profiles:
+    active: ${ENV:dev}
+  application:
+    name: ecommerce-backend
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      connection-timeout: 20000
+      max-lifetime: 60000
+      auto-commit: true
+      keepalive-time: 30000  # 30 secondes (inférieur à max-lifetime)
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  # Configuration Liquibase
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    contexts: ${LIQUIBASE_CONTEXTS:dev}
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+
+springdoc:
+  default-produces-media-type: application/json
+
+server:
+  port: ${SERVER_PORT:8085}
+  
+application:
+  apiName: api
+  apiVersion: v1
+  frontend:
+    basePath: ${FRONTEND_URL}
+  backend:
+    basePath: ${BACKEND_URL}
+  security:
+    jwt:
+      secretKey: ${SECRET_KEY}
+      accessToken:
+        expirationTime: ${TOKEN_VALIDITY}
+
+cors:
+  allowed-origins: ${ORIGINS}
+  allowed-methods: ${METHODS}
+  allowed-headers: ${ALLOWED_HEADERS}
+  exposed-headers: ${EXPOSED_HEADERS}
+  allow-credentials: ${CREDENTIALS}
+  max-age: ${MAX_AGE}
+
+logging:
+  level:
+    root: INFO
