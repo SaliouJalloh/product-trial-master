@@ -1,5 +1,44 @@
 :host {
-    display: block;
-    height: 100%;
-    overflow: auto;
+  display: block;
+  height: 100%;
+  overflow: auto;
+}
+
+.product-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.cart-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+:host ::ng-deep {
+  .p-card {
+    .p-card-content {
+      padding: 0;
+    }
+
+    .p-card-body {
+      padding: 1.5rem;
+    }
+
+    .p-card-footer {
+      padding: 1rem 1.5rem;
+      background-color: var(--surface-ground);
+    }
+  }
+
+  .p-button {
+    &.p-button-secondary {
+      .p-badge {
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+      }
+    }
+  }
 }

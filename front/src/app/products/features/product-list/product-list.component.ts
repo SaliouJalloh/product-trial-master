@@ -1,79 +1,141 @@
-import { Component, OnInit, inject, signal } from "@angular/core";
-import { Product } from "app/products/data-access/product.model";
-import { ProductsService } from "app/products/data-access/products.service";
-import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
+import { Component, inject, OnInit, signal } from "@angular/core";
+import { CommonModule, CurrencyPipe } from "@angular/common";
+import { RouterLink } from "@angular/router";
+import { DataViewModule } from "primeng/dataview";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
-import { DataViewModule } from 'primeng/dataview';
-import { DialogModule } from 'primeng/dialog';
-
-const emptyProduct: Product = {
-  id: 0,
-  code: "",
-  name: "",
-  description: "",
-  image: "",
-  category: "",
-  price: 0,
-  quantity: 0,
-  internalReference: "",
-  shellId: 0,
-  inventoryStatus: "INSTOCK",
-  rating: 0,
-  createdAt: 0,
-  updatedAt: 0,
-};
+import { DialogModule } from "primeng/dialog";
+import { BadgeModule } from "primeng/badge";
+import { ToastModule } from "primeng/toast";
+import { MessageService } from "primeng/api";
+import { ProductFormComponent } from "../../ui/product-form/product-form.component";
+import { Product } from "../../data-access/product.model";
+import { ProductsService } from "../../data-access/products.service";
+import { CartService } from "../../data-access/cart.service";
 
 @Component({
   selector: "app-product-list",
+  standalone: true,
+  imports: [
+    CommonModule,
+    DataViewModule,
+    ButtonModule,
+    CardModule,
+    DialogModule,
+    ProductFormComponent,
+    BadgeModule,
+    RouterLink,
+    CurrencyPipe,
+    ToastModule,
+  ],
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
-  standalone: true,
-  imports: [DataViewModule, CardModule, ButtonModule, DialogModule, ProductFormComponent],
+  providers: [MessageService],
 })
 export class ProductListComponent implements OnInit {
-  private readonly productsService = inject(ProductsService);
+  protected readonly productsService = inject(ProductsService);
+  protected readonly cartService = inject(CartService);
+  protected readonly messageService = inject(MessageService);
+  protected products = this.productsService.products;
+  protected isDialogVisible = false;
+  protected editedProduct = signal<Product | null>(null); // Local signal for edited product
 
-  public readonly products = this.productsService.products;
-
-  public isDialogVisible = false;
-  public isCreation = false;
-  public readonly editedProduct = signal<Product>(emptyProduct);
-
-  ngOnInit() {
-    this.productsService.get().subscribe();
+  ngOnInit(): void {
+    this.loadProducts();
   }
 
-  public onCreate() {
-    this.isCreation = true;
+  private loadProducts(): void {
+    this.productsService.get().subscribe({
+      error: (error) => {
+        console.error("Erreur lors du chargement des produits:", error);
+        this.messageService.add({
+          severity: "error",
+          summary: "Erreur",
+          detail: "Impossible de charger les produits",
+        });
+      },
+    });
+  }
+
+  protected onCreate(): void {
+    const now = new Date().toISOString();
+    this.editedProduct.set({
+      code: "PROD-" + Date.now(),
+      name: "",
+      description: "",
+      image: "https://via.placeholder.com/150",
+      category: "",
+      price: 0,
+      quantity: 0,
+      internalReference: "REF-" + Date.now(),
+      shellId: 1,
+      inventoryStatus: "INSTOCK",
+      rating: 0,
+      createdAt: now,
+      updatedAt: now,
+    });
     this.isDialogVisible = true;
-    this.editedProduct.set(emptyProduct);
   }
 
-  public onUpdate(product: Product) {
-    this.isCreation = false;
+  protected onUpdate(product: Product): void {
+    console.log(
+      "ProductListComponent: Product received in onUpdate - ID:",
+      product.id
+    );
+    console.log(
+      "ProductListComponent: Product received in onUpdate - Object:",
+      product
+    );
+    this.editedProduct.set({ ...product }); // Set existing product for editing
     this.isDialogVisible = true;
-    this.editedProduct.set(product);
   }
 
-  public onDelete(product: Product) {
-    this.productsService.delete(product.id).subscribe();
+  protected onDelete(product: Product): void {
+    this.productsService.delete(product).subscribe({
+      error: (error) => {
+        console.error("Erreur lors de la suppression:", error);
+        this.messageService.add({
+          severity: "error",
+          summary: "Erreur",
+          detail: "Impossible de supprimer le produit",
+        });
+      },
+    });
   }
 
-  public onSave(product: Product) {
-    if (this.isCreation) {
-      this.productsService.create(product).subscribe();
-    } else {
-      this.productsService.update(product).subscribe();
-    }
-    this.closeDialog();
+  protected onSave(product: Product): void {
+    this.productsService.save(product).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Succès",
+          detail: "Produit enregistré avec succès",
+        });
+        this.isDialogVisible = false;
+        this.editedProduct.set(null); // Clear edited product after save
+      },
+      error: (error) => {
+        console.error("Erreur lors de l'enregistrement:", error);
+        this.messageService.add({
+          severity: "error",
+          summary: "Erreur",
+          detail: "Impossible d'enregistrer le produit",
+        });
+      },
+    });
   }
 
-  public onCancel() {
-    this.closeDialog();
-  }
-
-  private closeDialog() {
+  protected onCancel(): void {
     this.isDialogVisible = false;
+    this.editedProduct.set(null); // Clear edited product on cancel
+  }
+
+  protected addToCart(product: Product): void {
+    this.cartService.addToCart(product);
+    this.messageService.add({
+      severity: "success",
+      summary: "Succès",
+      detail: "Produit ajouté au panier",
+    });
   }
 }

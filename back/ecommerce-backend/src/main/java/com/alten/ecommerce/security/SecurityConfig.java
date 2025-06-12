@@ -1,6 +1,5 @@
 package com.alten.ecommerce.security;
 
-import com.alten.ecommerce.service.jwt.AuthTokenFilter;
 import com.alten.ecommerce.service.userdetail.CustomerUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

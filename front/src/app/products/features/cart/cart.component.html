@@ -1,0 +1,59 @@
+<div class="cart-container">
+  <h1 class="text-center">Panier</h1>
+
+  @if (cartService.cartItems().length === 0) {
+  <div class="empty-cart">
+    <i class="pi pi-shopping-cart"></i>
+    <p>Votre panier est vide</p>
+  </div>
+  } @else {
+  <div class="cart-items">
+    @for (item of cartService.cartItems(); track item.product.id) {
+    <div class="cart-item">
+      <img
+        [src]="item.product.image"
+        [alt]="item.product.name"
+        class="product-image"
+      />
+      <div class="item-details">
+        <h3>{{ item.product.name }}</h3>
+        <p class="price">{{ item.product.price | currency : "EUR" }}</p>
+      </div>
+      <div class="quantity-controls">
+        <p-button
+          icon="pi pi-minus"
+          (onClick)="updateQuantity(item, -1)"
+          [disabled]="item.quantity <= 1"
+        />
+        <span class="quantity">{{ item.quantity }}</span>
+        <p-button icon="pi pi-plus" (onClick)="updateQuantity(item, 1)" />
+      </div>
+      <p-button
+        icon="pi pi-trash"
+        severity="danger"
+        (onClick)="removeItem(item)"
+      />
+    </div>
+    }
+  </div>
+
+  <div class="cart-summary">
+    <div class="summary-row">
+      <span>Total des articles:</span>
+      <span>{{ cartService.getTotalItems() }}</span>
+    </div>
+    <div class="summary-row total">
+      <span>Total à payer:</span>
+      <span>{{ cartService.getTotalPrice() | currency : "EUR" }}</span>
+    </div>
+    <div class="actions">
+      <p-button
+        label="Vider le panier"
+        severity="danger"
+        (onClick)="clearCart()"
+      />
+      <p-button label="Commander" severity="success" />
+    </div>
+  </div>
+  }
+</div>
