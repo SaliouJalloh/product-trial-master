@@ -1,0 +1,44 @@
+<p-toast></p-toast>
+
+<div class="contact-container">
+  <h2 class="contact-title">Contactez-nous</h2>
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+    <div class="p-field">
+      <label for="email">Email</label>
+      <input id="email" type="email" pInputText formControlName="email" />
+      @if (contactForm.get('email')?.invalid &&
+      contactForm.get('email')?.touched) { @if
+      (contactForm.get('email')?.errors?.['required']) {
+      <small class="p-error">L'email est obligatoire.</small>
+      } @if (contactForm.get('email')?.errors?.['email']) {
+      <small class="p-error">L'email n'est pas valide.</small>
+      } }
+    </div>
+
+    <div class="p-field">
+      <label for="message">Message</label>
+      <textarea
+        id="message"
+        pInputTextarea
+        rows="5"
+        cols="30"
+        formControlName="message"
+      ></textarea>
+      @if (contactForm.get('message')?.invalid &&
+      contactForm.get('message')?.touched) { @if
+      (contactForm.get('message')?.errors?.['required']) {
+      <small class="p-error">Le message est obligatoire.</small>
+      } @if (contactForm.get('message')?.errors?.['maxlength']) {
+      <small class="p-error"
+        >Le message ne doit pas dépasser 300 caractères.</small
+      >
+      } }
+    </div>
+
+    <p-button
+      label="Envoyer"
+      type="submit"
+      [disabled]="contactForm.invalid"
+    ></p-button>
+  </form>
+</div>

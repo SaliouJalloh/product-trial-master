@@ -12,7 +12,7 @@ spring:
       connection-timeout: 20000
       max-lifetime: 60000
       auto-commit: true
-      keepalive-time: 30000  # 30 secondes (inférieur à max-lifetime)
+      keepalive-time: 30000 # 30 secondes (inférieur à max-lifetime)
   jpa:
     hibernate:
       ddl-auto: none
@@ -38,7 +38,7 @@ springdoc:
 
 server:
   port: ${SERVER_PORT:8085}
-  
+
 application:
   apiName: api
   apiVersion: v1
@@ -63,3 +63,5 @@ cors:
 logging:
   level:
     root: INFO
+    org.springdoc: DEBUG
+    com.alten.ecommerce: DEBUG

@@ -1,6 +1,10 @@
 package com.alten.ecommerce.service;
 
 
+import com.alten.ecommerce.service.authentication.IAuthService;
+import com.alten.ecommerce.service.jwt.JwtProviderService;
+import com.alten.ecommerce.storage.persistence.IUserPersistenceService;
+import com.alten.ecommerce.storage.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,30 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
-import com.alten.ecommerce.service.authentication.IAuthService;
-import com.alten.ecommerce.service.jwt.JwtProviderService;
-import com.alten.ecommerce.storage.persistence.IUserPersistenceService;
-import com.alten.ecommerce.storage.repository.UserRepository;
-import com.alten.ecommerce.storage.repository.VerificationTokenRepository;
-import com.alten.ecommerce.storage.repository.RoleRepository;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -82,17 +69,17 @@ public class AuthenticationServiceTestIntegrationTest {
     @Test
     @DisplayName("✅ Inscription d'un utilisateur avec un email valide")
     void testRegisterWithValidEmail() {
-       
+
     }
 
     @Test
     void testRegister_UsernameAlreadyExists() {
-      
+
     }
 
     @Test
     public void testRegister_InvalidCredentials() {
-       
+
     }
 
     @Test
@@ -100,10 +87,10 @@ public class AuthenticationServiceTestIntegrationTest {
     void testRegisterWithExistingEmail() {
     }
 
-    
+
     @Test
     void AuthenticateUserWithFormFailedWhenPasswordsNotMatch() {
-       
+
     }
 
     @Test

@@ -1,0 +1,68 @@
+<div
+  class="flex justify-content-center align-items-center min-h-screen bg-gray-100"
+>
+  <p-card styleClass="w-30rem">
+    <ng-template pTemplate="header">
+      <div class="text-center p-4">
+        <h2 class="text-2xl font-bold text-gray-800">Connexion</h2>
+      </div>
+    </ng-template>
+
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+      <div class="flex flex-column gap-3">
+        <div class="flex flex-column gap-2">
+          <label for="email" class="font-medium">Email</label>
+          <input
+            id="email"
+            type="email"
+            pInputText
+            [(ngModel)]="email"
+            name="email"
+            required
+            placeholder="admin@admin.com"
+            [disabled]="isLoading()"
+          />
+        </div>
+
+        <div class="flex flex-column gap-2">
+          <label for="password" class="font-medium">Mot de passe</label>
+          <p-password
+            id="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            placeholder="admin"
+            [feedback]="false"
+            [toggleMask]="true"
+            [disabled]="isLoading()"
+            styleClass="w-full"
+          ></p-password>
+        </div>
+
+        @if (error()) {
+        <div class="p-message p-message-error">
+          <div class="p-message-wrapper">
+            <span class="p-message-icon pi pi-exclamation-triangle"></span>
+            <div class="p-message-text">{{ error() }}</div>
+          </div>
+        </div>
+        } @if (success()) {
+        <div class="p-message p-message-success">
+          <div class="p-message-wrapper">
+            <span class="p-message-icon pi pi-check"></span>
+            <div class="p-message-text">{{ success() }}</div>
+          </div>
+        </div>
+        }
+
+        <p-button
+          type="submit"
+          label="Se connecter"
+          [loading]="isLoading()"
+          [disabled]="!loginForm.form.valid || isLoading()"
+          styleClass="w-full"
+        ></p-button>
+      </div>
+    </form>
+  </p-card>
+</div>

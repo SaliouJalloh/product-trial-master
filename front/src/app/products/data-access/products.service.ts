@@ -2,13 +2,14 @@ import { Injectable, signal } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, tap, Subject } from "rxjs";
 import { Product } from "./product.model";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: "root",
 })
 export class ProductsService {
   private readonly _products = signal<Product[]>([]);
-  private readonly baseUrl = "http://localhost:8085/api/v1/products";
+  private readonly baseUrl = `${environment.apiUrl}/products`;
   private readonly _productDeleted = new Subject<number>();
 
   public readonly products = this._products.asReadonly();
@@ -18,18 +19,16 @@ export class ProductsService {
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem("token");
-    const headers = new HttpHeaders({
+    return new HttpHeaders({
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     });
-    console.log("Headers envoyés:", headers.keys());
-    return headers;
   }
 
   public get(): Observable<Product[]> {
     return this.http
       .get<Product[]>(this.baseUrl, { headers: this.getHeaders() })
-      .pipe(tap((products) => this._products.set(products)));
+      .pipe(tap((response) => this._products.set(response)));
   }
 
   public save(product: Product): Observable<Product> {
@@ -44,37 +43,21 @@ export class ProductsService {
     const isUpdate = product.id != null && product.id > 0;
     const url = isUpdate ? `${this.baseUrl}/${product.id}` : this.baseUrl;
 
-    console.log("URL de la requête:", url);
-    console.log("Méthode:", isUpdate ? "PATCH" : "POST");
-    console.log("Données envoyées:", productToSave);
-
     const request = isUpdate
       ? this.http.patch<Product>(url, productToSave, { headers })
       : this.http.post<Product>(url, productToSave, { headers });
 
     return request.pipe(
       tap({
-        next: (savedProduct) => {
-          console.log("Réponse du serveur:", savedProduct);
+        next: (response) => {
           const currentProducts = this._products();
           if (!isUpdate) {
-            this._products.set([...currentProducts, savedProduct]);
+            this._products.set([...currentProducts, response]);
           } else {
             this._products.set(
-              currentProducts.map((p) =>
-                p.id === savedProduct.id ? savedProduct : p
-              )
+              currentProducts.map((p) => (p.id === response.id ? response : p))
             );
           }
-        },
-        error: (error) => {
-          console.error("Erreur détaillée:", {
-            status: error.status,
-            statusText: error.statusText,
-            error: error.error,
-            headers: error.headers,
-            url: error.url,
-          });
         },
       })
     );

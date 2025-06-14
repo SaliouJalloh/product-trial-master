@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("${application.frontend.basePath}")
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 @Slf4j

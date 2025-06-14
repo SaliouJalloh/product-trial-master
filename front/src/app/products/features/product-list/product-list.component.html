@@ -15,7 +15,31 @@
   </a>
 </div>
 
-<p-dataView #dv [value]="products()">
+<div class="filter-controls mb-4">
+  <div class="p-field mr-2">
+    <label for="search">Rechercher</label>
+    <input
+      id="search"
+      type="text"
+      pInputText
+      [(ngModel)]="filterText"
+      (ngModelChange)="applyFilters()"
+    />
+  </div>
+  <div class="p-field">
+    <label for="categoryFilter">Catégorie</label>
+    <p-dropdown
+      id="categoryFilter"
+      [options]="categories"
+      [(ngModel)]="filterCategory"
+      (ngModelChange)="applyFilters()"
+      placeholder="Toutes les catégories"
+      [showClear]="true"
+    />
+  </div>
+</div>
+
+<p-dataView #dv [value]="filteredProducts()">
   <ng-template pTemplate="list" let-products>
     @for (product of products; track product) {
     <p-card class="block mb-2">
@@ -31,6 +55,21 @@
           <div class="text-sm text-500 mt-2">{{ product.description }}</div>
           <div class="text-xl font-bold text-900 mt-2">
             {{ product.price | currency : "EUR" }}
+          </div>
+          <div class="flex align-items-center mt-2">
+            <label for="quantity-{{ product.id }}" class="mr-2"
+              >Quantité:</label
+            >
+            <p-inputNumber
+              id="quantity-{{ product.id }}"
+              [ngModel]="product.quantity"
+              (ngModelChange)="onProductQuantityChange(product, $event)"
+              mode="decimal"
+              [showButtons]="true"
+              [min]="0"
+              [step]="1"
+              [inputStyle]="{ width: '4rem' }"
+            />
           </div>
         </div>
       </div>
@@ -58,6 +97,15 @@
     }
   </ng-template>
 </p-dataView>
+
+<p-paginator
+  [rows]="rows()"
+  [totalRecords]="filteredProducts().length"
+  [first]="first()"
+  (onPageChange)="onPageChange($event)"
+  [rowsPerPageOptions]="[5, 10, 20]"
+>
+</p-paginator>
 
 <p-dialog
   [(visible)]="isDialogVisible"

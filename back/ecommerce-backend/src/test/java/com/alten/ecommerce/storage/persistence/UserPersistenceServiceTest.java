@@ -41,7 +41,7 @@ class UserPersistenceServiceTest {
         // Then
         assertThat(user).isNotNull();
         assertThat(savedUser).usingRecursiveComparison()
-                .ignoringFields("id", "createdAt", "lastModifiedAt").isEqualTo(user);
+                .ignoringFields("id", "createdAt", "updatedAt").isEqualTo(user);
     }
 
     @Test

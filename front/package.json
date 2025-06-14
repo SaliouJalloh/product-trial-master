@@ -3,7 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve"
+    "start": "ng serve",
+    "build": "ng build --configuration production",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "test:ci": "ng test --configuration=ci",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "check": "biome check .",
+    "check:fix": "biome check --write ."
   },
   "private": true,
   "dependencies": {
@@ -39,7 +49,14 @@
     "@angular/language-service": "18.0.2",
     "@biomejs/biome": "1.7.2",
     "@types/chart.js": "2.9.30",
+    "@types/jasmine": "~5.1.0",
     "@types/node": "20.12.12",
+    "jasmine-core": "~5.1.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
     "ts-node": "7.0.0"
   }
 }

@@ -20,69 +20,7 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 
 @Component({
   selector: "app-product-form",
-  template: `
-    <form #form="ngForm" (ngSubmit)="onSave()">
-      <div class="form-field">
-        <label for="name">Nom</label>
-        <input
-          pInputText
-          type="text"
-          id="name"
-          name="name"
-          [ngModel]="productForm().name"
-          (ngModelChange)="onProductFormChange('name', $event)"
-          required
-        />
-      </div>
-      <div class="form-field">
-        <label for="price">Prix</label>
-        <p-inputNumber
-          [ngModel]="productForm().price"
-          (ngModelChange)="onProductFormChange('price', $event)"
-          name="price"
-          mode="decimal"
-          required
-        />
-      </div>
-      <div class="form-field">
-        <label for="description">Description</label>
-        <textarea
-          pInputTextarea
-          id="description"
-          name="description"
-          rows="5"
-          cols="30"
-          [ngModel]="productForm().description"
-          (ngModelChange)="onProductFormChange('description', $event)"
-        >
-        </textarea>
-      </div>
-      <div class="form-field">
-        <label for="description">Catégorie</label>
-        <p-dropdown
-          [options]="categories"
-          [ngModel]="productForm().category"
-          (ngModelChange)="onProductFormChange('category', $event)"
-          name="category"
-          appendTo="body"
-        />
-      </div>
-      <div class="flex justify-content-between">
-        <p-button
-          type="button"
-          (click)="onCancel()"
-          label="Annuler"
-          severity="help"
-        />
-        <p-button
-          type="submit"
-          [disabled]="!form.valid"
-          label="Enregistrer"
-          severity="success"
-        />
-      </div>
-    </form>
-  `,
+  templateUrl: "./product-form.component.html",
   styleUrls: ["./product-form.component.scss"],
   standalone: true,
   imports: [

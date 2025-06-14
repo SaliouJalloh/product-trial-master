@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, inject, OnInit, signal, computed } from "@angular/core";
 import { CommonModule, CurrencyPipe } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { DataViewModule } from "primeng/dataview";
@@ -7,11 +7,16 @@ import { CardModule } from "primeng/card";
 import { DialogModule } from "primeng/dialog";
 import { BadgeModule } from "primeng/badge";
 import { ToastModule } from "primeng/toast";
-import { MessageService } from "primeng/api";
+import { MessageService, SelectItem } from "primeng/api";
 import { ProductFormComponent } from "../../ui/product-form/product-form.component";
 import { Product } from "../../data-access/product.model";
 import { ProductsService } from "../../data-access/products.service";
 import { CartService } from "../../data-access/cart.service";
+import { InputNumberModule } from "primeng/inputnumber";
+import { InputTextModule } from "primeng/inputtext";
+import { DropdownModule } from "primeng/dropdown";
+import { FormsModule } from "@angular/forms";
+import { PaginatorModule } from "primeng/paginator";
 
 @Component({
   selector: "app-product-list",
@@ -27,6 +32,11 @@ import { CartService } from "../../data-access/cart.service";
     RouterLink,
     CurrencyPipe,
     ToastModule,
+    InputNumberModule,
+    InputTextModule,
+    DropdownModule,
+    FormsModule,
+    PaginatorModule,
   ],
   templateUrl: "./product-list.component.html",
   styleUrls: ["./product-list.component.scss"],
@@ -39,6 +49,42 @@ export class ProductListComponent implements OnInit {
   protected products = this.productsService.products;
   protected isDialogVisible = false;
   protected editedProduct = signal<Product | null>(null); // Local signal for edited product
+
+  protected filterText = signal<string>("");
+  protected filterCategory = signal<string | null>(null);
+
+  protected first = signal<number>(0); // Current page start index
+  protected rows = signal<number>(5); // Number of items per page
+
+  protected readonly categories: SelectItem[] = [
+    { value: "Accessories", label: "Accessories" },
+    { value: "Fitness", label: "Fitness" },
+    { value: "Clothing", label: "Clothing" },
+    { value: "Electronics", label: "Electronics" },
+  ];
+
+  protected filteredProducts = computed(() => {
+    let products = this.products() || []; // Ensure products is always an array
+    const text = this.filterText().toLowerCase();
+    const category = this.filterCategory();
+
+    if (text) {
+      products = products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(text) ||
+          product.description.toLowerCase().includes(text)
+      );
+    }
+
+    if (category) {
+      products = products.filter((product) => product.category === category);
+    }
+
+    // Apply pagination
+    const first = this.first();
+    const rows = this.rows();
+    return products.slice(first, first + rows);
+  });
 
   ngOnInit(): void {
     this.loadProducts();
@@ -137,5 +183,48 @@ export class ProductListComponent implements OnInit {
       summary: "Succès",
       detail: "Produit ajouté au panier",
     });
+  }
+
+  // New method to handle quantity changes directly from the list
+  protected onProductQuantityChange(
+    product: Product,
+    newQuantity: number
+  ): void {
+    if (newQuantity < 0) {
+      newQuantity = 0; // Prevent negative quantities
+    }
+    // Create a copy of the product with the updated quantity
+    const updatedProduct = { ...product, quantity: newQuantity };
+
+    // Save the updated product via the service
+    this.productsService.save(updatedProduct).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Succès",
+          detail: `Quantité de ${product.name} mise à jour avec succès.`,
+        });
+      },
+      error: (error) => {
+        console.error("Erreur lors de la mise à jour de la quantité:", error);
+        this.messageService.add({
+          severity: "error",
+          summary: "Erreur",
+          detail: `Impossible de mettre à jour la quantité de ${product.name}.`,
+        });
+      },
+    });
+  }
+
+  protected onPageChange(event: any): void {
+    this.first.set(event.first);
+    this.rows.set(event.rows);
+  }
+
+  protected applyFilters(): void {
+    // The `filteredProducts` computed signal will automatically react to changes in `filterText` and `filterCategory`
+    // No explicit action needed here, but the method is called to trigger change detection if needed for more complex scenarios.
+    // Also, reset first to 0 when filters change to go back to the first page of results.
+    this.first.set(0);
   }
 }

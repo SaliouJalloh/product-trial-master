@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("${application.frontend.basePath}")
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {

@@ -3,22 +3,20 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
       hibernate:
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.H2Dialect
-          format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
     show-sql: true
   datasource:
-    url: jdbc:h2:mem:testdb;INIT=create domain if not exists jsons as text;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
-    initialize: true
-  liquibase:
-    default-schema: public
-  # Hibernate Configuration pour H2
+    username: sa
+    password:
+
   sql:
     init:
       platform: h2
@@ -39,9 +37,9 @@ cors:
   allowed-origins: "${application.frontend.basePath}"
   allowed-methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS"
   allowed-headers: "Origin, Access-Control-Allow-Origin, Content-Type,
-                         Accept, Jwt-Token, Authorization, Origin, Accept, X-Requested-With,
-                         Access-Control-Request-Method, Access-Control-Request-Headers"
+    Accept, Jwt-Token, Authorization, Origin, Accept, X-Requested-With,
+    Access-Control-Request-Method, Access-Control-Request-Headers"
   exposed-headers: "Origin, Content-Type, Accept, Jwt-Token, Authorization,
-                         Access-Control-Allow-Origin, Access-Control-Allow-Origin, Access-Control-Allow-Credentials"
+    Access-Control-Allow-Origin, Access-Control-Allow-Origin, Access-Control-Allow-Credentials"
   allow-credentials: true
   max-age: 3600

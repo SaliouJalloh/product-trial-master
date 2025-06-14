@@ -29,14 +29,29 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private final CustomerUserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+        String requestPath = request.getRequestURI();
+        log.debug("Processing request for path: {}", requestPath);
+
+        if (requestPath.startsWith("/api/v1/auth/") || requestPath.startsWith("/error")
+                || requestPath.startsWith("/swagger-ui") || requestPath.startsWith("/v3/api-docs")) {
+            log.debug("Path {} is public, skipping JWT validation.", requestPath);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             String jwt = parseJwt(request);
-            if (jwt != null && jwtProviderService.validateJwtToken(jwt)) {
+            if (jwt != null) {
+                log.debug("JWT found: {}", jwt);
+                if (jwtProviderService.validateJwtToken(jwt)) {
                 String email = jwtProviderService.getEmailFromJwtToken(jwt);
+                    log.debug("JWT validated. Email: {}", email);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(email); // loadUserByUsername takes email here
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails,
                                 null,
@@ -45,9 +60,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.debug("Authentication set for user: {}", email);
+                } else {
+                    log.warn("Invalid JWT token for path: {}", requestPath);
+                }
+            } else {
+                log.debug("No JWT token found in request for path: {}", requestPath);
             }
         } catch (Exception e) {
-            log.error("Cannot set user authentication: {}", e.getMessage());
+            log.error("Cannot set user authentication for path {}: {}", requestPath, e.getMessage());
         }
 
         filterChain.doFilter(request, response);
