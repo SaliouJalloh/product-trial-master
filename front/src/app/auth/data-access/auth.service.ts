@@ -1,26 +1,28 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, tap } from "rxjs";
-
-interface LoginResponse {
-  token: string;
-}
-
-interface SigninRequest {
-  email: string;
-  password: string;
-}
+import { environment } from "../../../environments/environment";
+import { RegisterRequest } from "./register-request.model";
+import { LoginResponse, SigninRequest } from "./auth.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
+  private readonly api = environment.apiUrl;
   private readonly baseUrl = "/api/v1/auth";
 
   constructor(private readonly http: HttpClient) {}
 
-  login(email: string, password: string): Observable<LoginResponse> {
-    const request: SigninRequest = { email, password };
+  register(data: RegisterRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.api}/auth/account`, data).pipe(
+      tap((response) => {
+        localStorage.setItem("token", response.token);
+      })
+    );
+  }
+
+  login(request: SigninRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/token`, request).pipe(
       tap((response) => {
         localStorage.setItem("token", response.token);

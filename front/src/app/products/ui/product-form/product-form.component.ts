@@ -1,22 +1,21 @@
 import {
   Component,
-  computed,
   EventEmitter,
   input,
-  Output,
-  ViewEncapsulation,
-  signal,
   OnChanges,
+  Output,
+  signal,
   SimpleChanges,
+  ViewEncapsulation,
 } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { Product } from "app/products/data-access/product.model";
-import { SelectItem } from "primeng/api";
-import { ButtonModule } from "primeng/button";
-import { DropdownModule } from "primeng/dropdown";
-import { InputNumberModule } from "primeng/inputnumber";
-import { InputTextModule } from "primeng/inputtext";
-import { InputTextareaModule } from "primeng/inputtextarea";
+import {FormsModule} from "@angular/forms";
+import {Product} from "app/products/data-access/product.model";
+import {SelectItem} from "primeng/api";
+import {ButtonModule} from "primeng/button";
+import {DropdownModule} from "primeng/dropdown";
+import {InputNumberModule} from "primeng/inputnumber";
+import {InputTextModule} from "primeng/inputtext";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 @Component({
   selector: "app-product-form",
@@ -36,8 +35,8 @@ import { InputTextareaModule } from "primeng/inputtextarea";
 export class ProductFormComponent implements OnChanges {
   public readonly product = input.required<Product>();
 
-  @Output() cancel = new EventEmitter<void>();
-  @Output() save = new EventEmitter<Product>();
+  @Output() productCancel = new EventEmitter<void>();
+  @Output() productSave = new EventEmitter<Product>();
 
   public productForm = signal<Product>({} as Product);
 
@@ -57,18 +56,17 @@ export class ProductFormComponent implements OnChanges {
     { value: "Electronics", label: "Electronics" },
   ];
 
-  onProductFormChange(field: keyof Product, value: any) {
+  onProductFormChange(field: keyof Product, value: string | number) {
     this.productForm.update((currentProduct) => {
-      const updatedProduct = { ...currentProduct, [field]: value };
-      return updatedProduct;
+      return {...currentProduct, [field]: value};
     });
   }
 
   onCancel() {
-    this.cancel.emit();
+    this.productCancel.emit();
   }
 
   onSave() {
-    this.save.emit(this.productForm());
+    this.productSave.emit(this.productForm());
   }
 }

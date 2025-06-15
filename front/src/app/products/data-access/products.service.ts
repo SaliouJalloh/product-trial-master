@@ -74,7 +74,9 @@ export class ProductsService {
           this._products.set(
             currentProducts.filter((p) => p.id !== product.id)
           );
-          this._productDeleted.next(product.id!);
+          if (product.id) {
+            this._productDeleted.next(product.id);
+          }
         })
       );
   }

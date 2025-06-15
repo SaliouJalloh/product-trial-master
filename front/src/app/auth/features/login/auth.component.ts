@@ -1,11 +1,11 @@
 import { Component, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
-import { AuthService } from "./auth.service";
+import { AuthService } from "../../data-access/auth.service";
 
 @Component({
   selector: "app-auth",
@@ -18,6 +18,7 @@ import { AuthService } from "./auth.service";
     CardModule,
     InputTextModule,
     PasswordModule,
+    RouterLink,
   ],
 })
 export class AuthComponent {
@@ -35,20 +36,22 @@ export class AuthComponent {
     this.error.set(null);
     this.success.set(null);
 
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        this.success.set("Connexion réussie ! Redirection...");
-        setTimeout(() => {
-          this.router.navigate(["/products/list"]);
-        }, 1000);
-      },
-      error: (err) => {
-        this.error.set("Erreur de connexion. Vérifiez vos identifiants.");
-        console.error("Login error:", err);
-      },
-      complete: () => {
-        this.isLoading.set(false);
-      },
-    });
+    this.authService
+      .login({ email: this.email, password: this.password })
+      .subscribe({
+        next: () => {
+          this.success.set("Connexion réussie ! Redirection...");
+          setTimeout(() => {
+            this.router.navigate(["/products/list"]);
+          }, 1000);
+        },
+        error: (err) => {
+          this.error.set("Erreur de connexion. Vérifiez vos identifiants.");
+          console.error("Login error:", err);
+        },
+        complete: () => {
+          this.isLoading.set(false);
+        },
+      });
   }
 }

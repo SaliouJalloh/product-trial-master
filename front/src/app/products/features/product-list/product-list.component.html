@@ -115,8 +115,8 @@
   @if (editedProduct()) {
   <app-product-form
     [product]="editedProduct()!"
-    (save)="onSave($event)"
-    (cancel)="onCancel()"
+    (productSave)="onSave($event)"
+    (productCancel)="onCancel()"
   />
   }
 </p-dialog>

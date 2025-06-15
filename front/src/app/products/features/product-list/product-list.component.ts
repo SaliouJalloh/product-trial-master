@@ -216,9 +216,9 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  protected onPageChange(event: any): void {
-    this.first.set(event.first);
-    this.rows.set(event.rows);
+  protected onPageChange(event: { first?: number; rows?: number }): void {
+    this.first.set(event.first ?? 0);
+    this.rows.set(event.rows ?? 5);
   }
 
   protected applyFilters(): void {

@@ -1,0 +1,22 @@
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.w-30rem {
+  width: 30rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.register-link {
+  margin-top: 1rem;
+  text-align: center;
+}
+.register-link a {
+  color: #673ab7;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}

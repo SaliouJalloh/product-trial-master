@@ -1,0 +1,49 @@
+<h2>Inscription</h2>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="firstname">Prénom</label>
+    <input id="firstname" formControlName="firstname" type="text" />
+    @if (registerForm.get('firstname')?.invalid &&
+    registerForm.get('firstname')?.touched) {
+    <div>
+      <small>Le prénom est requis (max 50 caractères).</small>
+    </div>
+    }
+  </div>
+  <div>
+    <label for="username">Nom d'utilisateur</label>
+    <input id="username" formControlName="username" type="text" />
+    @if (registerForm.get('username')?.invalid &&
+    registerForm.get('username')?.touched) {
+    <div>
+      <small>Nom d'utilisateur requis (3-20 caractères).</small>
+    </div>
+    }
+  </div>
+  <div>
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" />
+    @if (registerForm.get('email')?.invalid &&
+    registerForm.get('email')?.touched) {
+    <div>
+      <small>Email requis et valide (max 50 caractères).</small>
+    </div>
+    }
+  </div>
+  <div>
+    <label for="password">Mot de passe</label>
+    <input id="password" formControlName="password" type="password" />
+    @if (registerForm.get('password')?.invalid &&
+    registerForm.get('password')?.touched) {
+    <div>
+      <small>Mot de passe requis (6-40 caractères).</small>
+    </div>
+    }
+  </div>
+  <button type="submit" [disabled]="loading">S'inscrire</button>
+</form>
+@if (error) {
+<div class="error">{{ error }}</div>
+} @if (success) {
+<div class="success">{{ success }}</div>
+}
