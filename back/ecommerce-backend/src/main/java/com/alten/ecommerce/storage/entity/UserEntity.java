@@ -18,13 +18,13 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "users")
 public class UserEntity extends AbstractEntity {
 
-    private String username;
+  private String username;
 
-    @Column(length = 50, nullable = false)
-    private String firstname;
+  @Column(length = 50, nullable = false)
+  private String firstname;
 
-    @Column(unique = true)
-    private String email;
+  @Column(unique = true)
+  private String email;
 
-    private String password;
+  private String password;
 }

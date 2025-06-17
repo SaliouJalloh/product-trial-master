@@ -5,7 +5,7 @@ import com.alten.ecommerce.controller.payload.request.SignupRequest;
 import com.alten.ecommerce.controller.payload.response.LoginResponse;
 
 public interface IAuthService {
-    LoginResponse registerUser(SignupRequest signupRequest);
+  LoginResponse registerUser(SignupRequest signupRequest);
 
-    LoginResponse authenticateUser(SigninRequest signinRequest);
+  LoginResponse authenticateUser(SigninRequest signinRequest);
 }

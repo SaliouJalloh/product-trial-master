@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class SigninRequest {
 
-    public String email;
+  public String email;
 
-    public String password;
+  public String password;
 }

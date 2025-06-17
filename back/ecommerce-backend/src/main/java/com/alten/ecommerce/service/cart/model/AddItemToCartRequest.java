@@ -12,10 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddItemToCartRequest {
-    @NotNull(message = "Product ID cannot be null")
-    private Long productId;
+  @NotNull(message = "Product ID cannot be null")
+  private Long productId;
 
-    @NotNull(message = "Quantity cannot be null")
-    @Min(value = 1, message = "Quantity must be at least 1")
-    private Integer quantity;
+  @NotNull(message = "Quantity cannot be null")
+  @Min(value = 1, message = "Quantity must be at least 1")
+  private Integer quantity;
 }

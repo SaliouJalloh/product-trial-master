@@ -1,17 +1,17 @@
 package com.alten.ecommerce.storage.persistence;
 
-import com.alten.ecommerce.storage.model.Product;
-
 import java.util.List;
 
+import com.alten.ecommerce.storage.model.Product;
+
 public interface IProductPersistenceService {
-    Product findProductById(Long id);
+  Product findProductById(Long id);
 
-    List<Product> findAllProducts();
+  List<Product> findAllProducts();
 
-    Product saveProduct(Product product);
+  Product saveProduct(Product product);
 
-    Product updateProduct(Product product, Long id);
+  Product updateProduct(Product product, Long id);
 
-    void deleteProductById(Long id);
+  void deleteProductById(Long id);
 }

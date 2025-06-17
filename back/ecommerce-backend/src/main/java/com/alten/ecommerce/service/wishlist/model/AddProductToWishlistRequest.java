@@ -12,6 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AddProductToWishlistRequest {
 
-    @NotNull(message = "Product ID cannot be null")
-    private Long productId;
+  @NotNull(message = "Product ID cannot be null")
+  private Long productId;
 }

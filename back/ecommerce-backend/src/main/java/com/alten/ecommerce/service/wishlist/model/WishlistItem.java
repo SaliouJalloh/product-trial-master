@@ -2,6 +2,7 @@ package com.alten.ecommerce.service.wishlist.model;
 
 import com.alten.ecommerce.storage.model.AbstractModel;
 import com.alten.ecommerce.storage.model.Product;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -12,5 +13,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class WishlistItem extends AbstractModel {
 
-    private Product product;
+  private Product product;
 }

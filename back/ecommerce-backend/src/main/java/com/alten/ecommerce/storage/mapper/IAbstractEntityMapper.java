@@ -4,15 +4,11 @@ import org.mapstruct.MappingTarget;
 
 public interface IAbstractEntityMapper<M, E> {
 
-    /**
-     * Convertir une entité en modèle
-     */
-    M toModel(E entity);
+  /** Convertir une entité en modèle */
+  M toModel(E entity);
 
-    /**
-     * Convertir un modèle en entité
-     */
-    E toEntity(M model);
+  /** Convertir un modèle en entité */
+  E toEntity(M model);
 
-    M populateModel(@MappingTarget M model, E entity);
+  M populateModel(@MappingTarget M model, E entity);
 }

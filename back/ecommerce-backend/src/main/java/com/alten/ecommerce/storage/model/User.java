@@ -13,12 +13,11 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class User extends AbstractModel {
 
-    private String firstname;
+  private String firstname;
 
-    private String email;
+  private String email;
 
-    private String password;
+  private String password;
 
-    private String username;
-
+  private String username;
 }

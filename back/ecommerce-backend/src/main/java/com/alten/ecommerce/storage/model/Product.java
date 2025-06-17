@@ -1,6 +1,7 @@
 package com.alten.ecommerce.storage.model;
 
 import com.alten.ecommerce.storage.enums.InventoryStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,26 +15,25 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Product extends AbstractModel {
 
-    private String code;
+  private String code;
 
-    private String name;
+  private String name;
 
-    private String description;
+  private String description;
 
-    private String image;
+  private String image;
 
-    private String category;
+  private String category;
 
-    private Double price;
+  private Double price;
 
-    private Integer quantity;
+  private Integer quantity;
 
-    private String internalReference;
+  private String internalReference;
 
-    private Long shellId;
+  private Long shellId;
 
-    private InventoryStatus inventoryStatus;
+  private InventoryStatus inventoryStatus;
 
-    private Double rating;
-
+  private Double rating;
 }

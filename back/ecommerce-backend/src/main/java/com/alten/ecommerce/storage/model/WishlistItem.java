@@ -13,6 +13,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class WishlistItem extends AbstractModel {
 
-    private Product product;
-    // La référence à Wishlist n'est pas nécessaire ici, la relation est portée par Wishlist.items
+  private Product product;
+  // La référence à Wishlist n'est pas nécessaire ici, la relation est portée par Wishlist.items
 }

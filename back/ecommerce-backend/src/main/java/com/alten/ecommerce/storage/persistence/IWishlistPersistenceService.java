@@ -1,22 +1,22 @@
 package com.alten.ecommerce.storage.persistence; // Corrigé
 
-import com.alten.ecommerce.storage.model.Wishlist;
-
 import java.util.Optional;
+
+import com.alten.ecommerce.storage.model.Wishlist;
 
 public interface IWishlistPersistenceService {
 
-    Optional<Wishlist> findByUserId(Long userId);
+  Optional<Wishlist> findByUserId(Long userId);
 
-    Optional<Wishlist> findById(Long wishlistId);
+  Optional<Wishlist> findById(Long wishlistId);
 
-    Wishlist createWishlist(Long userId);
+  Wishlist createWishlist(Long userId);
 
-    Wishlist addProductToWishlist(Long wishlistId, Long productId);
+  Wishlist addProductToWishlist(Long wishlistId, Long productId);
 
-    Wishlist removeProductFromWishlist(Long wishlistId, Long productId);
+  Wishlist removeProductFromWishlist(Long wishlistId, Long productId);
 
-    Wishlist clearWishlist(Long wishlistId);
+  Wishlist clearWishlist(Long wishlistId);
 
-    void deleteWishlist(Long wishlistId);
+  void deleteWishlist(Long wishlistId);
 }
