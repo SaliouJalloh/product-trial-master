@@ -50,7 +50,7 @@
     "@angular-eslint/eslint-plugin-template": "18.4.3",
     "@angular-eslint/schematics": "18.4.3",
     "@angular-eslint/template-parser": "18.4.3",
-    "@angular/cli": "^17.3.17",
+    "@angular/cli": "^18.2.20",
     "@angular/language-service": "18.0.2",
     "@biomejs/biome": "1.7.2",
     "@types/chart.js": "2.9.30",
