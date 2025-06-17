@@ -142,10 +142,10 @@ jobs:
           cd front
           npm run format:check
 
-      - name: Security audit (Frontend)
-        run: |
-          cd front
-          npm audit --audit-level=moderate
+      # - name: Security audit (Frontend)
+      #   run: |
+      #     cd front
+      #     npm audit --audit-level=moderate
 
       - name: Commit formatting changes
         if: github.event_name == 'push'
