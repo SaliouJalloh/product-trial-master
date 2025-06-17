@@ -71,6 +71,7 @@ public class SecurityConfig {
                     .authenticated());
 
     http.authenticationProvider(authenticationProvider());
+
     http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

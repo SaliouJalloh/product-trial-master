@@ -171,6 +171,26 @@
                     </importOrder>
                 </java>
             </configuration>
+            <executions>
+                <execution>
+                    <id>check-formatting-before-run</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                    <configuration>
+                        <failureMessage>
+                            ⚠️  Le code n'est pas correctement formaté !
+                            
+                            🔧 Pour corriger le formatage, exécutez :
+                            mvn spotless:apply
+                            
+                            📝 Puis relancez l'application :
+                            mvn spring-boot:run
+                        </failureMessage>
+                    </configuration>
+                </execution>
+            </executions>
         </plugin>
     </plugins>
 </build>

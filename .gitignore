@@ -41,4 +41,7 @@ yarn-error.log*
 /back/build
 
 # System Files
-Thumbs.db 
+Thumbs.db
+
+# Backup directories
+back_backup/

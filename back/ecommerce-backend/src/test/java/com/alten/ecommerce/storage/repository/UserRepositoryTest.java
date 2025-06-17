@@ -38,7 +38,8 @@ class UserRepositoryTest {
   void existsByEmail_success() {
     // Given
     String email = "contact@gmail.com";
-    UserEntity userEntity = DataProviderTest.buildUserEntity();
+    UserEntity userEntity =     
+    DataProviderTest.buildUserEntity();
     userEntity.setUsername(email);
     userEntity.setEmail(email);
     userRepository.save(userEntity);
