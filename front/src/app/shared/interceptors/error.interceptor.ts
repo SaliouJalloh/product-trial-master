@@ -13,7 +13,7 @@ import { ApiError } from "../interfaces/api.interface";
 
 export const errorInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ) => {
   const messageService = inject(MessageService);
   const router = inject(Router);
@@ -47,6 +47,6 @@ export const errorInterceptor: HttpInterceptorFn = (
       });
 
       return throwError(() => error);
-    })
+    }),
   );
 };

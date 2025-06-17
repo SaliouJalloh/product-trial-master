@@ -25,7 +25,7 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {
     this.registerForm = this.fb.group({
       firstname: ["", [Validators.required, Validators.maxLength(50)]],

@@ -13,7 +13,9 @@ export class CartService {
   constructor(private productsService: ProductsService) {
     this.productsService.productDeleted$.subscribe((deletedProductId) => {
       this._cartItems.set(
-        this._cartItems().filter((item) => item.product.id !== deletedProductId)
+        this._cartItems().filter(
+          (item) => item.product.id !== deletedProductId,
+        ),
       );
     });
   }
@@ -21,7 +23,7 @@ export class CartService {
   public addToCart(product: Product): void {
     const currentItems = this._cartItems();
     const existingItem = currentItems.find(
-      (item) => item.product.id === product.id
+      (item) => item.product.id === product.id,
     );
 
     if (existingItem) {
@@ -34,7 +36,7 @@ export class CartService {
   public removeFromCart(product: Product): void {
     const currentItems = this._cartItems();
     this._cartItems.set(
-      currentItems.filter((item) => item.product.id !== product.id)
+      currentItems.filter((item) => item.product.id !== product.id),
     );
   }
 
@@ -47,8 +49,8 @@ export class CartService {
     const currentItems = this._cartItems();
     this._cartItems.set(
       currentItems.map((item) =>
-        item.product.id === product.id ? { ...item, quantity } : item
-      )
+        item.product.id === product.id ? { ...item, quantity } : item,
+      ),
     );
   }
 
@@ -59,7 +61,7 @@ export class CartService {
   public getTotalPrice(): number {
     return this._cartItems().reduce(
       (total, item) => total + item.product.price * item.quantity,
-      0
+      0,
     );
   }
 

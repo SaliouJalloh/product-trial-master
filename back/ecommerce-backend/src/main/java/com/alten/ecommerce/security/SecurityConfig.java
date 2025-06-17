@@ -2,6 +2,7 @@ package com.alten.ecommerce.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -58,8 +59,14 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**")
                     .permitAll()
-                    .requestMatchers("/api/v1/products/**")
-                    .permitAll() // Public access to view products
+                    .requestMatchers(HttpMethod.GET, "/api/v1/products/**")
+                    .permitAll() // Public access to view products (GET only)
+                    .requestMatchers(HttpMethod.POST, "/api/v1/products/**")
+                    .authenticated() // Require authentication for creating products
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/products/**")
+                    .authenticated() // Require authentication for updating products
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/products/**")
+                    .authenticated() // Require authentication for deleting products
                     .anyRequest()
                     .authenticated());
 

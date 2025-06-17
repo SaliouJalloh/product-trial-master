@@ -20,14 +20,14 @@ describe("ProductListComponent", () => {
       ["get", "save", "delete"],
       {
         products: signal([]),
-      }
+      },
     );
     const cartServiceSpy = jasmine.createSpyObj(
       "CartService",
       ["addToCart", "getTotalItems", "getTotalPrice"],
       {
         cartItems: signal([]),
-      }
+      },
     );
 
     await TestBed.configureTestingModule({
@@ -46,7 +46,7 @@ describe("ProductListComponent", () => {
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
     productsService = TestBed.inject(
-      ProductsService
+      ProductsService,
     ) as jasmine.SpyObj<ProductsService>;
     cartService = TestBed.inject(CartService) as jasmine.SpyObj<CartService>;
 

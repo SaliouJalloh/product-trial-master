@@ -29,7 +29,10 @@ export class AuthComponent {
   error = signal<string | null>(null);
   success = signal<string | null>(null);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   onLogin(): void {
     this.isLoading.set(true);

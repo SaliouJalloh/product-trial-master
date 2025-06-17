@@ -21,7 +21,7 @@ describe("CartComponent", () => {
       ],
       {
         cartItems: signal([]),
-      }
+      },
     );
 
     await TestBed.configureTestingModule({

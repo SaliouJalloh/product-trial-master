@@ -19,7 +19,7 @@ describe("ErrorInterceptor", () => {
       errorInterceptor(request, handler).subscribe(
         (event: HttpEvent<unknown>) => {
           expect(event).toBeDefined();
-        }
+        },
       );
     });
   });

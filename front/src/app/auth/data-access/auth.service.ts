@@ -18,7 +18,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.api}/auth/account`, data).pipe(
       tap((response) => {
         localStorage.setItem("token", response.token);
-      })
+      }),
     );
   }
 
@@ -26,7 +26,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${this.baseUrl}/token`, request).pipe(
       tap((response) => {
         localStorage.setItem("token", response.token);
-      })
+      }),
     );
   }
 

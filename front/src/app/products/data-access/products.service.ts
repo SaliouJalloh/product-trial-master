@@ -55,11 +55,11 @@ export class ProductsService {
             this._products.set([...currentProducts, response]);
           } else {
             this._products.set(
-              currentProducts.map((p) => (p.id === response.id ? response : p))
+              currentProducts.map((p) => (p.id === response.id ? response : p)),
             );
           }
         },
-      })
+      }),
     );
   }
 
@@ -72,12 +72,12 @@ export class ProductsService {
         tap(() => {
           const currentProducts = this._products();
           this._products.set(
-            currentProducts.filter((p) => p.id !== product.id)
+            currentProducts.filter((p) => p.id !== product.id),
           );
           if (product.id) {
             this._productDeleted.next(product.id);
           }
-        })
+        }),
       );
   }
 }

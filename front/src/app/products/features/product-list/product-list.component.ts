@@ -72,7 +72,7 @@ export class ProductListComponent implements OnInit {
       products = products.filter(
         (product) =>
           product.name.toLowerCase().includes(text) ||
-          product.description.toLowerCase().includes(text)
+          product.description.toLowerCase().includes(text),
       );
     }
 
@@ -126,11 +126,11 @@ export class ProductListComponent implements OnInit {
   protected onUpdate(product: Product): void {
     console.log(
       "ProductListComponent: Product received in onUpdate - ID:",
-      product.id
+      product.id,
     );
     console.log(
       "ProductListComponent: Product received in onUpdate - Object:",
-      product
+      product,
     );
     this.editedProduct.set({ ...product }); // Set existing product for editing
     this.isDialogVisible = true;
@@ -188,7 +188,7 @@ export class ProductListComponent implements OnInit {
   // New method to handle quantity changes directly from the list
   protected onProductQuantityChange(
     product: Product,
-    newQuantity: number
+    newQuantity: number,
   ): void {
     if (newQuantity < 0) {
       newQuantity = 0; // Prevent negative quantities
