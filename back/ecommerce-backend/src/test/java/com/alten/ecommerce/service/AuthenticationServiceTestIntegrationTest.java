@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
 import com.alten.ecommerce.service.authentication.IAuthService;
@@ -21,8 +20,7 @@ import com.alten.ecommerce.storage.persistence.IUserPersistenceService;
 import com.alten.ecommerce.storage.repository.UserRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-public class AuthenticationServiceTestIntegrationTest {
+class AuthenticationServiceTestIntegrationTest {
   private static final String facebookAccessToken =
       "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU0NzQwMmZjNDU1MmUzOGE5OGY3YzY4OTcwMjM5ZDRjODVjZTBiNjkiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJ5YWFkb3VAZ21haWwuY29tIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
   private static final String googleIdToken =

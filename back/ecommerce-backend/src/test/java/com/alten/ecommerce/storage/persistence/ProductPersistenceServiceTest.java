@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.alten.ecommerce.storage.mapper.IProductPersistenceMapperImpl;
 import com.alten.ecommerce.storage.model.Product;
@@ -15,9 +14,8 @@ import com.alten.ecommerce.storage.repository.ProductRepository;
 import com.alten.ecommerce.tools.DataProviderTest;
 
 @DataJpaTest
-@ActiveProfiles("test")
 @Import({ProductPersistenceService.class, IProductPersistenceMapperImpl.class})
-public class ProductPersistenceServiceTest {
+class ProductPersistenceServiceTest {
 
   @Autowired private ProductRepository productRepository;
 

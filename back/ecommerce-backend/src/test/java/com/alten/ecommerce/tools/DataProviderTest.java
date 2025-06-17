@@ -1,12 +1,12 @@
 package com.alten.ecommerce.tools;
 
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.alten.ecommerce.storage.entity.UserEntity;
 import com.alten.ecommerce.storage.model.Product;
 import com.alten.ecommerce.storage.model.User;
 
-@ActiveProfiles("test")
+@SpringBootTest
 public class DataProviderTest {
 
   public static String ACCESS_TOKEN =

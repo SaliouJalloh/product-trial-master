@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
-
 import com.alten.ecommerce.exception.ResourceNotFoundException;
 import com.alten.ecommerce.storage.mapper.IUserPersistenceMapperImpl;
 import com.alten.ecommerce.storage.model.User;
@@ -17,7 +15,6 @@ import com.alten.ecommerce.storage.repository.UserRepository;
 import com.alten.ecommerce.tools.DataProviderTest;
 
 @DataJpaTest
-@ActiveProfiles("test")
 @Import({UserPersistenceService.class, IUserPersistenceMapperImpl.class})
 class UserPersistenceServiceTest {
 

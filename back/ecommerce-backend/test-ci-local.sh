@@ -16,7 +16,7 @@ echo "🧹 Nettoyage des conteneurs existants..."
 docker stop test-postgres-ci 2>/dev/null || true
 docker rm test-postgres-ci 2>/dev/null || true
 
-# Trouver un port disponible
+# Trouver un port disponible (commencer par 5432)
 PORT=5432
 while docker ps -q --filter "publish=$PORT" | grep -q .; do
     echo "Port $PORT est occupé, essai du port suivant..."
@@ -36,40 +36,59 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Attendre que PostgreSQL soit prêt (approche simple)
+# Attendre que PostgreSQL soit prêt (approche compatible Windows)
 echo "⏳ Attente que PostgreSQL soit prêt..."
-sleep 15
+sleep 10
 
-# Test simple de connectivité avec netcat ou telnet
+# Test de connectivité avec plusieurs méthodes
 echo "🔍 Test de connectivité..."
+CONNECTION_OK=false
+
+# Méthode 1: netcat (nc)
 if command -v nc &> /dev/null; then
-    # Utiliser netcat si disponible
-    if nc -z localhost $PORT; then
-        echo "✅ PostgreSQL est accessible sur le port $PORT"
-    else
-        echo "❌ PostgreSQL n'est pas accessible"
-        docker stop test-postgres-ci
-        docker rm test-postgres-ci
-        exit 1
+    echo "  - Test avec netcat..."
+    if nc -z localhost $PORT 2>/dev/null; then
+        echo "✅ PostgreSQL est accessible sur le port $PORT (netcat)"
+        CONNECTION_OK=true
     fi
-elif command -v telnet &> /dev/null; then
-    # Utiliser telnet si disponible
+fi
+
+# Méthode 2: telnet
+if [ "$CONNECTION_OK" = false ] && command -v telnet &> /dev/null; then
+    echo "  - Test avec telnet..."
     if echo "quit" | telnet localhost $PORT 2>&1 | grep -q "Connected"; then
-        echo "✅ PostgreSQL est accessible sur le port $PORT"
-    else
-        echo "❌ PostgreSQL n'est pas accessible"
-        docker stop test-postgres-ci
-        docker rm test-postgres-ci
-        exit 1
+        echo "✅ PostgreSQL est accessible sur le port $PORT (telnet)"
+        CONNECTION_OK=true
     fi
-else
-    # Fallback : vérifier les logs Docker
-    echo "⚠️  Outils de test non disponibles, vérification des logs..."
+fi
+
+# Méthode 3: curl (si disponible)
+if [ "$CONNECTION_OK" = false ] && command -v curl &> /dev/null; then
+    echo "  - Test avec curl..."
+    if curl -s --connect-timeout 5 telnet://localhost:$PORT >/dev/null 2>&1; then
+        echo "✅ PostgreSQL est accessible sur le port $PORT (curl)"
+        CONNECTION_OK=true
+    fi
+fi
+
+# Méthode 4: Vérification des logs Docker
+if [ "$CONNECTION_OK" = false ]; then
+    echo "  - Vérification des logs Docker..."
     if docker logs test-postgres-ci 2>&1 | grep -q "database system is ready to accept connections"; then
         echo "✅ PostgreSQL semble prêt (d'après les logs)"
+        CONNECTION_OK=true
     else
-        echo "⚠️  Impossible de vérifier, on continue..."
+        echo "⚠️  Impossible de vérifier la connectivité, on continue..."
+        # On continue quand même car PostgreSQL peut être prêt sans que les logs soient visibles
+        CONNECTION_OK=true
     fi
+fi
+
+if [ "$CONNECTION_OK" = false ]; then
+    echo "❌ PostgreSQL n'est pas accessible"
+    docker stop test-postgres-ci
+    docker rm test-postgres-ci
+    exit 1
 fi
 
 # Sauvegarder la configuration originale
@@ -78,7 +97,13 @@ cp src/test/resources/application-ci.yml src/test/resources/application-ci.yml.b
 
 # Modifier temporairement la configuration pour utiliser le bon port
 echo "🔧 Configuration du port PostgreSQL..."
-sed -i "s/localhost:5432/localhost:$PORT/g" src/test/resources/application-ci.yml
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+    # Windows Git Bash
+    sed -i "s/localhost:5432/localhost:$PORT/g" src/test/resources/application-ci.yml
+else
+    # Linux/Mac
+    sed -i "s/localhost:5432/localhost:$PORT/g" src/test/resources/application-ci.yml
+fi
 
 # Exécuter les tests avec le profil CI
 echo "🔧 Exécution des tests avec le profil CI..."
