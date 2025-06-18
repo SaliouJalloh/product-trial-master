@@ -1,9 +1,11 @@
 package com.alten.ecommerce.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alten.ecommerce.controller.dto.LoginResponseDTO;
@@ -35,6 +37,7 @@ public class AuthController {
   }
 
   @PostMapping("/account")
+  @ResponseStatus(HttpStatus.CREATED)
   public LoginResponseDTO registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     log.info("Register request received for user: {}", signUpRequest.email);
     LoginResponse loginResponse = authService.registerUser(signUpRequest);

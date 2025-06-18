@@ -16,6 +16,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.alten.ecommerce.exception.BusinessException;
 import com.alten.ecommerce.exception.ResourceNotFoundException;
+import com.alten.ecommerce.exception.UsernameAlreadyExistsException;
+
+import jakarta.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -64,5 +67,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     body.put("error", "Validation Error");
     body.put("details", errors);
     return new ResponseEntity<>(body, status);
+  }
+
+  @ExceptionHandler(UsernameAlreadyExistsException.class)
+  public ResponseEntity<Object> handleUsernameAlreadyExists(
+      UsernameAlreadyExistsException ex, WebRequest request) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "Conflict");
+    body.put("message", ex.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<Object> handleConstraintViolation(
+      ConstraintViolationException ex, WebRequest request) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "Validation Error");
+    body.put("message", "Invalid data");
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 }

@@ -8,6 +8,7 @@ import com.alten.ecommerce.service.cart.model.AddItemToCartRequest;
 import com.alten.ecommerce.service.cart.model.UpdateCartItemRequest;
 import com.alten.ecommerce.storage.model.Cart;
 import com.alten.ecommerce.storage.model.User;
+import com.alten.ecommerce.storage.persistence.ICartPersistenceService;
 import com.alten.ecommerce.storage.persistence.IUserPersistenceService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class CartService implements ICartService {
 
   private final IUserPersistenceService userPersistenceService; // Pour lookup user
-  private final com.alten.ecommerce.storage.persistence.ICartPersistenceService
-      cartPersistenceService; // Pour accès cart persistence
+  private final ICartPersistenceService cartPersistenceService; // Pour accès cart persistence
 
   @Override
   @Transactional(readOnly = true)
