@@ -41,8 +41,8 @@ public class WishlistService implements IWishlistService {
   }
 
   @Override
-  public Wishlist getWishlistForPrincipal(User springSecurityUser) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public Wishlist getWishlistForPrincipal(String email) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return wishlistPersistenceService
         .findByUserId(user.getId())
@@ -52,25 +52,22 @@ public class WishlistService implements IWishlistService {
 
   @Override
   public Wishlist addProductToWishlistForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser,
-      AddProductToWishlistRequest request) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+      String email, AddProductToWishlistRequest request) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return addProductToWishlist(user.getId(), request);
   }
 
   @Override
-  public Wishlist removeProductFromWishlistForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser, Long productId) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public Wishlist removeProductFromWishlistForPrincipal(String email, Long productId) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return removeProductFromWishlist(user.getId(), productId);
   }
 
   @Override
-  public Wishlist clearWishlistForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public Wishlist clearWishlistForPrincipal(String email) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return clearWishlist(user.getId());
   }

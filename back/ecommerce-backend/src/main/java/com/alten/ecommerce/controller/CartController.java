@@ -27,8 +27,9 @@ public class CartController {
 
   @GetMapping
   public ResponseEntity<CartResponseDTO> getCart(@AuthenticationPrincipal User springSecurityUser) {
+    String email = springSecurityUser.getUsername();
     CartResponseDTO cartResponseDTO =
-        controllerMapper.toCartResponseDTO(cartService.getCartForPrincipal(springSecurityUser));
+        controllerMapper.toCartResponseDTO(cartService.getCartForPrincipal(email));
     return ResponseEntity.ok(cartResponseDTO);
   }
 
@@ -36,9 +37,9 @@ public class CartController {
   public ResponseEntity<CartResponseDTO> addItemToCart(
       @AuthenticationPrincipal User springSecurityUser,
       @Valid @RequestBody AddItemToCartRequest request) {
+    String email = springSecurityUser.getUsername();
     CartResponseDTO cartResponseDTO =
-        controllerMapper.toCartResponseDTO(
-            cartService.addItemToCartForPrincipal(springSecurityUser, request));
+        controllerMapper.toCartResponseDTO(cartService.addItemToCartForPrincipal(email, request));
     return ResponseEntity.ok(cartResponseDTO);
   }
 
@@ -47,24 +48,27 @@ public class CartController {
       @AuthenticationPrincipal User springSecurityUser,
       @PathVariable Long itemId,
       @Valid @RequestBody UpdateCartItemRequest request) {
+    String email = springSecurityUser.getUsername();
     CartResponseDTO cartResponseDTO =
         controllerMapper.toCartResponseDTO(
-            cartService.updateCartItemForPrincipal(springSecurityUser, itemId, request));
+            cartService.updateCartItemForPrincipal(email, itemId, request));
     return ResponseEntity.ok(cartResponseDTO);
   }
 
   @DeleteMapping("/items/{itemId}")
   public ResponseEntity<Void> removeItemFromCart(
       @AuthenticationPrincipal User springSecurityUser, @PathVariable Long itemId) {
-    cartService.removeItemFromCartForPrincipal(springSecurityUser, itemId);
+    String email = springSecurityUser.getUsername();
+    cartService.removeItemFromCartForPrincipal(email, itemId);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping
   public ResponseEntity<CartResponseDTO> clearCart(
       @AuthenticationPrincipal User springSecurityUser) {
+    String email = springSecurityUser.getUsername();
     CartResponseDTO cartResponseDTO =
-        controllerMapper.toCartResponseDTO(cartService.clearCartForPrincipal(springSecurityUser));
+        controllerMapper.toCartResponseDTO(cartService.clearCartForPrincipal(email));
     return ResponseEntity.ok(cartResponseDTO);
   }
 }

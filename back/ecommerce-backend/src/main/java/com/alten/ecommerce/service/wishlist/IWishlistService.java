@@ -1,7 +1,6 @@
 package com.alten.ecommerce.service.wishlist;
 
 import com.alten.ecommerce.service.wishlist.model.AddProductToWishlistRequest;
-import com.alten.ecommerce.storage.model.User;
 import com.alten.ecommerce.storage.model.Wishlist;
 
 public interface IWishlistService {
@@ -19,15 +18,13 @@ public interface IWishlistService {
    * Retrieves the wishlist for the user associated with the principal. If a wishlist does not exist
    * for the user, a new one is created.
    *
-   * @param springSecurityUser The principal user.
+   * @param email The email of the user.
    * @return The user's wishlist.
    */
-  Wishlist getWishlistForPrincipal(User springSecurityUser);
+  Wishlist getWishlistForPrincipal(String email);
 
   /** Adds a product to the user's wishlist by principal. */
-  Wishlist addProductToWishlistForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser,
-      AddProductToWishlistRequest request);
+  Wishlist addProductToWishlistForPrincipal(String email, AddProductToWishlistRequest request);
 
   /**
    * Adds a product to the user's wishlist. If the product is already in the wishlist, no action is
@@ -40,8 +37,7 @@ public interface IWishlistService {
   Wishlist addProductToWishlist(Long userId, AddProductToWishlistRequest request);
 
   /** Removes a product from the user's wishlist by principal. */
-  Wishlist removeProductFromWishlistForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser, Long productId);
+  Wishlist removeProductFromWishlistForPrincipal(String email, Long productId);
 
   /**
    * Removes a product from the user's wishlist.
@@ -53,8 +49,7 @@ public interface IWishlistService {
   Wishlist removeProductFromWishlist(Long userId, Long productId);
 
   /** Clears the user's wishlist by principal. */
-  Wishlist clearWishlistForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser);
+  Wishlist clearWishlistForPrincipal(String email);
 
   /**
    * Clears the user's wishlist.

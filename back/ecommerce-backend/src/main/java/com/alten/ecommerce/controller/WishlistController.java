@@ -26,10 +26,10 @@ public class WishlistController {
 
   @GetMapping
   public ResponseEntity<WishlistResponseDTO> getWishlist(
-      @AuthenticationPrincipal com.alten.ecommerce.storage.model.User springSecurityUser) {
+      @AuthenticationPrincipal User springSecurityUser) {
+    String email = springSecurityUser.getUsername();
     WishlistResponseDTO dto =
-        controllerMapper.toWishlistResponseDTO(
-            wishlistService.getWishlistForPrincipal(springSecurityUser));
+        controllerMapper.toWishlistResponseDTO(wishlistService.getWishlistForPrincipal(email));
     return ResponseEntity.ok(dto);
   }
 
@@ -37,27 +37,29 @@ public class WishlistController {
   public ResponseEntity<WishlistResponseDTO> addProductToWishlist(
       @AuthenticationPrincipal User springSecurityUser,
       @Valid @RequestBody AddProductToWishlistRequest request) {
+    String email = springSecurityUser.getUsername();
     WishlistResponseDTO wishlistResponseDTO =
         controllerMapper.toWishlistResponseDTO(
-            wishlistService.addProductToWishlistForPrincipal(springSecurityUser, request));
+            wishlistService.addProductToWishlistForPrincipal(email, request));
     return ResponseEntity.ok(wishlistResponseDTO);
   }
 
   @DeleteMapping("/items/{productId}")
   public ResponseEntity<WishlistResponseDTO> removeProductFromWishlist(
       @AuthenticationPrincipal User springSecurityUser, @PathVariable Long productId) {
+    String email = springSecurityUser.getUsername();
     WishlistResponseDTO wishlistResponseDTO =
         controllerMapper.toWishlistResponseDTO(
-            wishlistService.removeProductFromWishlistForPrincipal(springSecurityUser, productId));
+            wishlistService.removeProductFromWishlistForPrincipal(email, productId));
     return ResponseEntity.ok(wishlistResponseDTO);
   }
 
   @DeleteMapping
   public ResponseEntity<WishlistResponseDTO> clearWishlist(
       @AuthenticationPrincipal User springSecurityUser) {
+    String email = springSecurityUser.getUsername();
     WishlistResponseDTO wishlistResponseDTO =
-        controllerMapper.toWishlistResponseDTO(
-            wishlistService.clearWishlistForPrincipal(springSecurityUser));
+        controllerMapper.toWishlistResponseDTO(wishlistService.clearWishlistForPrincipal(email));
     return ResponseEntity.ok(wishlistResponseDTO);
   }
 }

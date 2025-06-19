@@ -31,44 +31,36 @@ public class CartService implements ICartService {
   }
 
   @Override
-  public Cart getCartForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public Cart getCartForPrincipal(String email) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return getCartByUserId(user.getId());
   }
 
   @Override
-  public Cart addItemToCartForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser,
-      AddItemToCartRequest request) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public Cart addItemToCartForPrincipal(String email, AddItemToCartRequest request) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return cartPersistenceService.addItemToCart(user.getId(), request);
   }
 
   @Override
-  public Cart updateCartItemForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser,
-      Long itemId,
-      UpdateCartItemRequest request) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public Cart updateCartItemForPrincipal(String email, Long itemId, UpdateCartItemRequest request) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return cartPersistenceService.updateCartItem(user.getId(), itemId, request);
   }
 
   @Override
-  public void removeItemFromCartForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser, Long itemId) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public void removeItemFromCartForPrincipal(String email, Long itemId) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     cartPersistenceService.removeItemFromCart(user.getId(), itemId);
   }
 
   @Override
-  public Cart clearCartForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser) {
-    User user = userPersistenceService.findUserByEmail(springSecurityUser.getUsername());
+  public Cart clearCartForPrincipal(String email) {
+    User user = userPersistenceService.findUserByEmail(email);
     if (user == null) throw new ResourceNotFoundException("User not found...");
     return cartPersistenceService.clearCart(user.getId());
   }

@@ -8,24 +8,18 @@ public interface ICartService {
 
   Cart getCartByUserId(Long userId);
 
-  /** Récupère le panier pour l'utilisateur associé au principal Spring Security. */
-  Cart getCartForPrincipal(org.springframework.security.core.userdetails.User springSecurityUser);
+  /** Récupère le panier pour l'utilisateur identifié par email. */
+  Cart getCartForPrincipal(String email);
 
-  /** Ajoute un article au panier pour l'utilisateur associé au principal Spring Security. */
-  Cart addItemToCartForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser,
-      AddItemToCartRequest request);
+  /** Ajoute un article au panier pour l'utilisateur identifié par email. */
+  Cart addItemToCartForPrincipal(String email, AddItemToCartRequest request);
 
-  /** Met à jour un article du panier pour l'utilisateur associé au principal Spring Security. */
-  Cart updateCartItemForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser,
-      Long itemId,
-      UpdateCartItemRequest request);
+  /** Met à jour un article du panier pour l'utilisateur identifié par email. */
+  Cart updateCartItemForPrincipal(String email, Long itemId, UpdateCartItemRequest request);
 
-  /** Supprime un article du panier pour l'utilisateur associé au principal Spring Security. */
-  void removeItemFromCartForPrincipal(
-      org.springframework.security.core.userdetails.User springSecurityUser, Long itemId);
+  /** Supprime un article du panier pour l'utilisateur identifié par email. */
+  void removeItemFromCartForPrincipal(String email, Long itemId);
 
-  /** Vide le panier pour l'utilisateur associé au principal Spring Security. */
-  Cart clearCartForPrincipal(org.springframework.security.core.userdetails.User springSecurityUser);
+  /** Vide le panier pour l'utilisateur identifié par email. */
+  Cart clearCartForPrincipal(String email);
 }
